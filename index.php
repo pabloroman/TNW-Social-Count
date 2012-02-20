@@ -2,7 +2,7 @@
 /*
 Plugin Name: TNW Social Count
 Plugin URI: http://stijlfabriek.com
-Description: Save the number of Twitter retweets, Facebook likes and LinkedIn shares as post_meta values.
+Description: Save the number of Twitter retweets, Facebook likes, Google Plus and LinkedIn shares as post_meta information.
 Version: 1.0
 Author: Pablo Román for The Next Web
 Author URI: http://stijlfabriek.com
@@ -39,7 +39,7 @@ function tnwsc_init()
 
 function tnwsc_process() 
 {
-	error_log(date('Y-m-d H:i:s', time())." - Request: tnwsc_process()\n", 3, '/var/www/stijlfabriek.com/log/tnwsc.log');
+	error_log(date('Y-m-d H:i:s', time())." - Request: tnwsc_process()\n", 3, dirname(__FILE__).'/tnwsc.log');
 	$tnwsc_services = get_option( 'tnwsc_services' );
 	$tnwsc_debug = get_option( 'tnwsc_debug' );
 	$posts = tnwsc_get_posts();
@@ -50,7 +50,7 @@ function tnwsc_process()
 				if( $enabled ) {
 					$count = tnwsc_get_count( $permalink, $service_name );
 					echo "Request: ".$permalink." / ". $service_name." / ". $count."<br />";
-					error_log(date('Y-m-d H:i:s', time())." - Request: ".$permalink." / ". $service_name." / ". $count."\n", 3, '/var/www/stijlfabriek.com/log/tnwsc.log');
+					error_log(date('Y-m-d H:i:s', time())." - Request: ".$permalink." / ". $service_name." / ". $count."\n", 3, dirname(__FILE__).'/tnwsc.log');
 					if($debug == 0) {
 						tnwsc_update_post_meta( $post->ID, $service_name, $count );
 					}
@@ -167,7 +167,7 @@ function tnwsc_schedule_sync( $immediate = false )
     $hook = "tnwsc_sync";
     $tnwsc_sync_frequency = get_option( 'tnwsc_sync_frequency' ) ? get_option( 'tnwsc_sync_frequency' ) : $tnwsc_wp_options['tnwsc_sync_frequency'];
     
-    error_log(date('Y-m-d H:i:s', time())." - Request: tnwsc_schedule_sync(). Synching in $tnwsc_sync_frequency seconds\n", 3, '/var/www/stijlfabriek.com/log/tnwsc.log');
+    error_log(date('Y-m-d H:i:s', time())." - Request: tnwsc_schedule_sync(). Synching in $tnwsc_sync_frequency seconds\n", 3, dirname(__FILE__).'/tnwsc.log');
     
     wp_clear_scheduled_hook( $hook );
     if ( $immediate ) {
