@@ -2,7 +2,7 @@
 
 $tnwsc_config = array(
 	'services' => array(
-		'facebook' => array('url' => "https://graph.facebook.com/fql?q=SELECT url,normalized_url,share_count,like_count,comment_count,total_count,commentsbox_count,+comments_fbid,click_count FROM link_stat WHERE url='%s'"),
+		'facebook' => array('url' => "https://graph.facebook.com/fql?q=%s", 'params' => 'SELECT url,normalized_url,share_count,like_count,comment_count,total_count,click_count FROM link_stat WHERE url = "%s"'),
 		'twitter' => array('url' => "http://urls.api.twitter.com/1/urls/count.json?url=%s"),
 		'linkedin' => array('url' => "http://www.linkedin.com/countserv/count/share?url=%s"),
 		'google' => array('url' => "https://clients6.google.com/rpc")

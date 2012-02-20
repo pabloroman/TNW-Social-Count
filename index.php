@@ -88,7 +88,11 @@ function tnwsc_get_count( $permalink, $service )
 	if( $service === 'google' ) {
 		return tnwsc_do_curl( $permalink, $service );
 	} else {
-		$url = sprintf( $tnwsc_config['services'][$service]["url"], $permalink );
+		// If there are extra params in the url, append them to the permalink first
+		if( isset( $tnwsc_config['services'][$service]["params"] ) ) {
+			$permalink = sprintf( $tnwsc_config['services'][$service]["params"], $permalink );
+		}
+		$url = sprintf( $tnwsc_config['services'][$service]["url"], urlencode ( $permalink ) );
 		return tnwsc_do_curl( $url, $service );
 	}
 }
@@ -102,7 +106,6 @@ function tnwsc_do_curl($url, $service)
 	// Google+ is an special, hack-ish case
 	if( $service == 'google' ) 
 	{
-	//$url = "http://thenextweb.com/";
 		// GET +1s. Credits to Tom Anthony: http://www.tomanthony.co.uk/blog/google_plus_one_button_seo_count_api/
 	    $curl = curl_init();
 	    curl_setopt( $curl, CURLOPT_URL, "https://clients6.google.com/rpc" );
@@ -131,7 +134,9 @@ function tnwsc_do_curl($url, $service)
 					$return = json_decode( $return, true );
 					$social_count = ( isset( $return['data'][0]['total_count'] ) ) ? $return['data'][0]['total_count'] : 0;
 					// TODO: Better handling of errors	
-					if(isset($return['error'])) { }
+					if(isset($return['error'])) { 
+						echo "Error ".$return["code"]." (".$return["type"].") - ".$return["message"]."\n";
+					}
 				break;
 				
 				case 'twitter':
