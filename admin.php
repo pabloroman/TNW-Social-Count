@@ -20,7 +20,11 @@ if( isset( $postdata['tnwsc_save'] ) ) {
 				$updated_tnwsc_services[$name] = 0;
 			}
 		} else {
-			$updated_tnwsc_services[$postdata['tnwsc_services']] = 1;
+			if( $name == $postdata['tnwsc_services'] ) {
+				$updated_tnwsc_services[$name] = 1;
+			} else {
+				$updated_tnwsc_services[$name] = 0;
+			}
 		}
 	}
 
