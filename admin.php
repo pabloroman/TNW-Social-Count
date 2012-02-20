@@ -6,19 +6,21 @@ if ( ! current_user_can('manage_options') ){
 
 global $tnwsc_config;
 
-// Dodge Wordpress's rediculous magic quotes nonsense
 $postdata = wpv_postdata( file_get_contents('php://input') );
-
 
 // save posted settings
 if( isset( $postdata['tnwsc_save'] ) ) {
 	$updated_tnwsc_services = array();
-	$tnwsc_services = get_option('tnwsc_services');
-	foreach($tnwsc_services as $name => $v) {
-		if(in_array($name, $postdata['tnwsc_services'])) {
-			$updated_tnwsc_services[$name] = 1;
+	$tnwsc_services = get_option( 'tnwsc_services' );
+	foreach( $tnwsc_services as $name => $v ) {
+		if( is_array( $postdata['tnwsc_services'] ) ) {
+			if( in_array( $name, $postdata['tnwsc_services'] ) ) {
+				$updated_tnwsc_services[$name] = 1;
+			} else {
+				$updated_tnwsc_services[$name] = 0;
+			}
 		} else {
-			$updated_tnwsc_services[$name] = 0;
+			$updated_tnwsc_services[$postdata['tnwsc_services']] = 1;
 		}
 	}
 
@@ -29,13 +31,13 @@ if( isset( $postdata['tnwsc_save'] ) ) {
     update_option( 'tnwsc_debug', (int) ! empty($postdata['tnwsc_debug']) );
 }
 
-$active_sync = get_option('tnwsc_active_sync');
-$sync_frequency = get_option('tnwsc_sync_frequency');
-$post_range = get_option('tnwsc_post_range');
-$tnwsc_services = get_option('tnwsc_services');
-$debug = get_option('tnwsc_debug');
+$active_sync = get_option( 'tnwsc_active_sync' );
+$sync_frequency = get_option( 'tnwsc_sync_frequency' );
+$post_range = get_option( 'tnwsc_post_range' );
+$tnwsc_services = get_option( 'tnwsc_services' );
+$debug = get_option( 'tnwsc_debug' );
 
-if($active_sync == '1') {
+if( $active_sync == '1' ) {
 	tnwsc_schedule_sync(true);
 }
 ?>
