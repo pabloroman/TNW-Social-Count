@@ -51,7 +51,7 @@ function tnwsc_process()
 					$count = tnwsc_get_count( $permalink, $service_name );
 					echo "Request: ".$permalink." / ". $service_name." / ". $count."<br />";
 					error_log(date('Y-m-d H:i:s', time())." - Request: ".$permalink." / ". $service_name." / ". $count."\n", 3, dirname(__FILE__).'/tnwsc.log');
-					if($debug == 0) {
+					if($tnwsc_debug == 0) {
 						tnwsc_update_post_meta( $post->ID, $service_name, $count );
 					}
 				}
