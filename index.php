@@ -9,7 +9,7 @@ Author URI: http://stijlfabriek.com
 */
 
 include dirname(__FILE__).'/config.php';
-
+include dirname(__FILE__).'/frontend/share-button.php';
 
 function tnwsc_setup() 
 {
@@ -185,14 +185,15 @@ function tnwsc_schedule_sync( $immediate = false )
 }
 
 
-
+// Backend actions
 add_action( 'init', 'tnwsc_init' );
 add_action( 'tnwsc_sync', 'tnwsc_process' );
 
 register_activation_hook( __FILE__, 'tnwsc_setup' );
 register_deactivation_hook( __FILE__, 'tnwsc_deactivate' );
 
-
+// Frontend actions
+add_action('wp_enqueue_scripts', 'tnwsc_frontend_init');
 
 // admin menu hook
 function tnwsc_admin_menu() {
