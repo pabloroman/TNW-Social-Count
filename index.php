@@ -30,16 +30,24 @@ function tnwsc_deactivate()
 
 function tnwsc_init() 
 {
+/*
 	if ( isset( $_GET['tnwsc_sync'] ) ) {
 		tnwsc_process();
 		exit;
 	}
+*/
 }
 
 
-function tnwsc_process() 
+function tnwsc_log($message) 
 {
-	error_log(date('Y-m-d H:i:s', time())." - Request: tnwsc_process()\n", 3, dirname(__FILE__).'/tnwsc.log');
+	global $tnwsc_error_log_path;
+	error_log(date('Y-m-d H:i:s', time())." - ".$message."\n", 3, $tnwsc_error_log_path);
+}
+
+function tnwsc_process() 
+{	
+	tnwsc_log('Request: tnwsc_process()');
 	$tnwsc_services = get_option( 'tnwsc_services' );
 	$tnwsc_debug = get_option( 'tnwsc_debug' );
 	$posts = tnwsc_get_posts();
@@ -49,8 +57,7 @@ function tnwsc_process()
 			foreach( $tnwsc_services as $service_name => $enabled ) {
 				if( $enabled ) {
 					$count = tnwsc_get_count( $permalink, $service_name );
-					echo "Request: ".$permalink." / ". $service_name." / ". $count."<br />";
-					error_log(date('Y-m-d H:i:s', time())." - Request: ".$permalink." / ". $service_name." / ". $count."\n", 3, dirname(__FILE__).'/tnwsc.log');
+					tnwsc_log("Request: ".$permalink." / ". $service_name." / ". $count); 
 					if($tnwsc_debug == 0) {
 						tnwsc_update_post_meta( $post->ID, $service_name, $count );
 					}
@@ -58,7 +65,7 @@ function tnwsc_process()
 			}
 		}
 	}
-	if( get_option( 'tnwsc_active_sync' ) ) {
+	if( get_option( 'tnwsc_active_sync' ) == 1) {
 		tnwsc_schedule_sync();
 	}
 }
@@ -134,8 +141,8 @@ function tnwsc_do_curl($url, $service)
 					$return = json_decode( $return, true );
 					$social_count = ( isset( $return['data'][0]['total_count'] ) ) ? $return['data'][0]['total_count'] : 0;
 					// TODO: Better handling of errors	
-					if(isset($return['error'])) { 
-						echo "Error ".$return["code"]." (".$return["type"].") - ".$return["message"]."\n";
+					if( isset( $return['error'] ) ) { 
+						tnwsc_log( "Error ".$return["code"]." (".$return["type"].") - ".$return["message"] );
 					}
 				break;
 				
@@ -146,7 +153,7 @@ function tnwsc_do_curl($url, $service)
 				
 				case 'linkedin':
 					$return = json_decode( str_replace( 'IN.Tags.Share.handleCount(', '', str_replace( ');', '', $return ) ), true );
-					$social_count = ( isset($return['count'] ) ) ? $return['count'] : 0;
+					$social_count = ( isset( $return['count'] ) ) ? $return['count'] : 0;
 				break;
 			}
 		}
@@ -171,13 +178,10 @@ function tnwsc_schedule_sync( $immediate = false )
 	global $tnwsc_wp_options;
     $hook = "tnwsc_sync";
     $tnwsc_sync_frequency = get_option( 'tnwsc_sync_frequency' ) ? get_option( 'tnwsc_sync_frequency' ) : $tnwsc_wp_options['tnwsc_sync_frequency'];
-    
-    error_log(date('Y-m-d H:i:s', time())." - Request: tnwsc_schedule_sync(). Synching in $tnwsc_sync_frequency seconds\n", 3, dirname(__FILE__).'/tnwsc.log');
-    
+    tnwsc_log( "tnwsc_schedule_sync() - Synching in ".$tnwsc_sync_frequency." seconds" );
     wp_clear_scheduled_hook( $hook );
     if ( $immediate ) {
-        //we should schedule the next sync "immediately" (in 15s)
-        wp_schedule_single_event( time() + 15, $hook );
+        tnwsc_process();
     } else {
         //schedule the next sync in typical fashion
         wp_schedule_single_event( time() + $tnwsc_sync_frequency, $hook );
