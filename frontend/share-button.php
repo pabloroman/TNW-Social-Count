@@ -91,7 +91,7 @@
 		
 		$the_title = get_the_title();
 		$the_permalink = get_permalink();
-		$the_excerpt = get_excerpt();        
+		$the_excerpt = get_the_excerpt();
 ?>
 	
 <div class="toolbar-social">
