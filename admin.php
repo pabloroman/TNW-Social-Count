@@ -28,11 +28,15 @@ if( isset( $postdata['tnwsc_save'] ) ) {
 		}
 	}
 
-    update_option( 'tnwsc_services', $updated_tnwsc_services );
-    update_option( 'tnwsc_post_range', $postdata['tnwsc_post_range'] );
-    update_option( 'tnwsc_sync_frequency', $postdata['tnwsc_sync_frequency'] );
-    update_option( 'tnwsc_active_sync', (int) ! empty($postdata['tnwsc_active_sync']) );
-    update_option( 'tnwsc_debug', (int) ! empty($postdata['tnwsc_debug']) );
+	update_option( 'tnwsc_services', $updated_tnwsc_services );
+	update_option( 'tnwsc_post_range', $postdata['tnwsc_post_range'] );
+	update_option( 'tnwsc_sync_frequency', $postdata['tnwsc_sync_frequency'] );
+	update_option( 'tnwsc_active_sync', (int) ! empty($postdata['tnwsc_active_sync']) );
+	update_option( 'tnwsc_debug', (int) ! empty($postdata['tnwsc_debug']) );
+
+	if( get_option( 'tnwsc_active_sync' ) == 1 ) {
+		tnwsc_schedule_sync(true);
+	}
 }
 
 $active_sync = get_option( 'tnwsc_active_sync' );
@@ -41,9 +45,7 @@ $post_range = get_option( 'tnwsc_post_range' );
 $tnwsc_services = get_option( 'tnwsc_services' );
 $debug = get_option( 'tnwsc_debug' );
 
-if( $active_sync == '1' ) {
-	tnwsc_schedule_sync(true);
-}
+
 ?>
 
     <div class="wrap">
