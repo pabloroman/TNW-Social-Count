@@ -181,7 +181,7 @@ function tnwsc_schedule_sync( $immediate = false )
     tnwsc_log( "tnwsc_schedule_sync() - Synching in ".$tnwsc_sync_frequency." seconds" );
     wp_clear_scheduled_hook( $hook );
     if ( $immediate ) {
-        tnwsc_process();
+        wp_schedule_single_event( time() -1, $hook );
     } else {
         //schedule the next sync in typical fashion
         wp_schedule_single_event( time() + $tnwsc_sync_frequency, $hook );
