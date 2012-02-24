@@ -7,3 +7,12 @@ Version: 1.0
 Author: Pablo Román for The Next Web
 Author URI: http://stijlfabriek.com
 
+
+Installation:
+After activating the plugin, just include the following snippet of code in your theme, wherever you want the button to appear:
+
+  	<?php 
+			if(function_exists('render_tnwsc_button')) {
+				echo render_tnwsc_button();
+			} 
+		?>
