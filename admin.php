@@ -59,7 +59,7 @@ $debug = get_option( 'tnwsc_debug' );
 						<th scope="row"><label>Query the following services:</label></th>
 						<td>
 			    			<?php foreach($tnwsc_services as $service => $enabled) { ?>
-			    			<label><input type="checkbox" name="tnwsc_services" value="<?php echo $service; ?>" <?php echo $enabled?' checked="checked"':''?> /> <?php echo ucwords($service); ?> </label>
+			    			<label><input type="checkbox" name="tnwsc_services[]" value="<?php echo $service; ?>" <?php echo $enabled?' checked="checked"':''?> /> <?php echo ucwords($service); ?> </label>
 			    			<br />
 			    			<?php } ?>						
 						</td>
