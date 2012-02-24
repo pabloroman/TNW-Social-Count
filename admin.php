@@ -6,7 +6,7 @@ if ( ! current_user_can('manage_options') ){
 
 global $tnwsc_config;
 
-$postdata = wpv_postdata( file_get_contents('php://input') );
+$postdata = $_POST;
 
 // save posted settings
 if( isset( $postdata['tnwsc_save'] ) ) {
