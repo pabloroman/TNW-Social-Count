@@ -6,7 +6,7 @@ if ( ! current_user_can('manage_options') ){
 
 global $tnwsc_config;
 
-$postdata = wpv_postdata( file_get_contents('php://input') );
+$postdata = $_POST;
 
 // save posted settings
 if( isset( $postdata['tnwsc_save'] ) ) {
@@ -59,7 +59,7 @@ $debug = get_option( 'tnwsc_debug' );
 						<th scope="row"><label>Query the following services:</label></th>
 						<td>
 			    			<?php foreach($tnwsc_services as $service => $enabled) { ?>
-			    			<label><input type="checkbox" name="tnwsc_services" value="<?php echo $service; ?>" <?php echo $enabled?' checked="checked"':''?> /> <?php echo ucwords($service); ?> </label>
+			    			<label><input type="checkbox" name="tnwsc_services[]" value="<?php echo $service; ?>" <?php echo $enabled?' checked="checked"':''?> /> <?php echo ucwords($service); ?> </label>
 			    			<br />
 			    			<?php } ?>						
 						</td>
