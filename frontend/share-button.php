@@ -72,7 +72,7 @@
            
         }
 ?>
-        <a href="<?php echo $url; ?>" class="popup-link icon <?php echo $network; ?>"></a>
+        <a href="<?php echo $url; ?>" target="_blank" class="popup-link icon <?php echo $network; ?>"></a>
 <?php
     }
     
