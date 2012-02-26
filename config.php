@@ -17,6 +17,6 @@ $tnwsc_wp_options = array(
 	'tnwsc_debug' => 1
 ); 
 
-$tnwsc_error_log_path = dirname( __FILE__)'./tnwsc.log';
+$tnwsc_error_log_path = dirname( __FILE__).'./tnwsc.log';
 
 ?>
