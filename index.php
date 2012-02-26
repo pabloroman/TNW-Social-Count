@@ -25,24 +25,18 @@ function tnwsc_deactivate()
 	foreach($tnwsc_wp_options as $key => $value) {	
 		delete_option($key);
 	}
+	$hook = "tnwsc_sync";
+	wp_clear_scheduled_hook( $hook );
 	
-}
-
-function tnwsc_init() 
-{
-/*
-	if ( isset( $_GET['tnwsc_sync'] ) ) {
-		tnwsc_process();
-		exit;
-	}
-*/
 }
 
 
 function tnwsc_log($message) 
 {
-	global $tnwsc_error_log_path;
-	error_log(date('Y-m-d H:i:s', time())." - ".$message."\n", 3, $tnwsc_error_log_path);
+	$tnwsc_log_path = get_option( 'tnwsc_log_path' );
+	if( is_writable( dirname( $tnwsc_log_path ) ) ) {
+		error_log( date('Y-m-d H:i:s', time())." - ".$message."\n", 3, $tnwsc_log_path);
+	}
 }
 
 function tnwsc_process() 
@@ -54,15 +48,17 @@ function tnwsc_process()
 	if( $posts ) {
 		foreach( $posts as $post ) {
 			$permalink = get_permalink( $post->ID );
+			$debug_info = '';
 			foreach( $tnwsc_services as $service_name => $enabled ) {
 				if( $enabled ) {
 					$count = tnwsc_get_count( $permalink, $service_name );
-					tnwsc_log("Request: ".$permalink." / ". $service_name." / ". $count); 
+					$debug_info .= ' / '.$service_name." (".$count.")";
 					if($tnwsc_debug == 0) {
 						tnwsc_update_post_meta( $post->ID, $service_name, $count );
 					}
 				}
 			}
+			tnwsc_log("Request: ".$permalink. $debug_info); 
 		}
 	}
 	if( get_option( 'tnwsc_active_sync' ) == 1) {
@@ -188,9 +184,7 @@ function tnwsc_schedule_sync( $immediate = false )
     }
 }
 
-
 // Backend actions
-add_action( 'init', 'tnwsc_init' );
 add_action( 'tnwsc_sync', 'tnwsc_process' );
 
 register_activation_hook( __FILE__, 'tnwsc_setup' );
