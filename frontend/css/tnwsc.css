@@ -24,6 +24,7 @@ background: linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
 box-shadow: 0px 4px 11px rgba(0,0,0,0.3);
 }
+.toolbar-social .tooltip table { border-collapse: collapse; border-spacing: 0; }
 .toolbar-social .tooltip td { padding: 5px; border: none; }
 .toolbar-social .tooltip td:first-child { border-left: none; }
 .toolbar-social .tooltip td.separator { border-top: 1px solid #CCC; border-bottom: 1px solid #fff; height: 0px; padding: 0; }
