@@ -37,8 +37,8 @@ box-shadow: 0px 4px 11px rgba(0,0,0,0.3);
 .toolbar-social .icon { background-image: url("../tnwsc-sprite.png"); background-repeat: no-repeat; vertical-align: top; display: block; width: 36px; height: 36px; text-indent: 9999em; overflow: hidden; }
 .toolbar-social .icon:hover { border: 0; text-decoration: none; }
 
-.toolbar-social .icon.instapaper { background-position: -179px -1px; width: 18px; height: 18px; display: inline-block; margin-left: 8px; }
-.toolbar-social .icon.readitlater { background-position: -207px -1px; width: 18px; height: 18px; display: inline-block; margin-left: 8px; }
+.toolbar-social .icon.readitlater { background-position: -179px -1px; width: 18px; height: 18px; display: inline-block; margin-left: 8px; }
+.toolbar-social .icon.instapaper { background-position: -207px -1px; width: 18px; height: 18px; display: inline-block; margin-left: 8px; }
 
 .toolbar-social .icon.facebook { background-position: 0 0; }
 .toolbar-social .icon.twitter { background-position: -43px 0; }
