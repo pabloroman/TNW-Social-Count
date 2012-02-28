@@ -40,6 +40,13 @@ if( isset( $postdata['tnwsc_save'] ) ) {
 	}
 }
 
+if ( isset( $postdata['tnwsc_sync_now'] ) ) {
+	$all_posts = true;
+	$count = tnwsc_process( $all_posts );
+	echo "<div class='updated fade'><p><strong>" . sprintf(__( '%s posts updated' ), $count) . '</strong></p></div>';
+
+}
+
 $active_sync = get_option( 'tnwsc_active_sync' );
 $sync_frequency = get_option( 'tnwsc_sync_frequency' );
 $post_range = get_option( 'tnwsc_post_range' );
@@ -50,20 +57,20 @@ $log_path = get_option( 'tnwsc_log_path' );
 
 ?>
 
-    <div class="wrap">
-    	<h2>TNW Social Count admin</h2>
-    	
-    	<form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>" enctype="application/x-www-form-urlencoded">
-    	
-    		<table class="form-table">
-    			<tbody>
-    				<tr valign="top">
+	<div class="wrap">
+		<h2>TNW Social Count admin</h2>
+		
+		<form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>" enctype="application/x-www-form-urlencoded">
+		
+			<table class="form-table">
+				<tbody>
+					<tr valign="top">
 						<th scope="row"><label>Query the following services:</label></th>
 						<td>
-			    			<?php foreach($tnwsc_services as $service => $enabled) { ?>
-			    			<label><input type="checkbox" name="tnwsc_services[]" value="<?php echo $service; ?>" <?php echo $enabled?' checked="checked"':''?> /> <?php echo ucwords($service); ?> </label>
-			    			<br />
-			    			<?php } ?>						
+					<?php foreach($tnwsc_services as $service => $enabled) { ?>
+						<label><input type="checkbox" name="tnwsc_services[]" value="<?php echo $service; ?>" <?php echo $enabled?' checked="checked"':''?> /> <?php echo ucwords($service); ?> </label>
+						<br />
+						<?php } ?>
 						</td>
 					</tr>
 					<tr valign="top">
@@ -86,11 +93,17 @@ $log_path = get_option( 'tnwsc_log_path' );
 						<th scope="row"><label>Sync social count for posts published before:</label></th>
 						<td><input type="text" name="tnwsc_post_range" value="<?php echo esc_html($post_range)?>" size="10" /> seconds (Default: 7 days)</td>
 					</tr>
-    			</tbody>
-    		</table>
+				</tbody>
+			</table>
 
 			<p class="submit"><input type="submit" class="button-primary" value="Save config" name="tnwsc_save" />
-    		
-    	</form>
-    </div>
-    
+
+		</form>
+
+		<h3>Sync social count</h3>
+		
+		<form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>" enctype="application/x-www-form-urlencoded">
+			<p>Yes, I want to sync the social count for ALL the articles of this blog. Please bear in mind that this might take several minutes to complete depending on the number or articles published.</p>
+			<p class="submit"><input type="submit" class="button-primary" value="Sync now" name="tnwsc_sync_now" />
+		</form>
+	</div>

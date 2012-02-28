@@ -39,12 +39,12 @@ function tnwsc_log($message)
 	}
 }
 
-function tnwsc_process() 
+function tnwsc_process( $all_posts = false ) 
 {	
 	tnwsc_log('Request: tnwsc_process()');
 	$tnwsc_services = get_option( 'tnwsc_services' );
 	$tnwsc_debug = get_option( 'tnwsc_debug' );
-	$posts = tnwsc_get_posts();
+	$posts = tnwsc_get_posts( $all_posts );
 	if( $posts ) {
 		foreach( $posts as $post ) {
 			$permalink = get_permalink( $post->ID );
@@ -64,10 +64,11 @@ function tnwsc_process()
 	if( get_option( 'tnwsc_active_sync' ) == 1) {
 		tnwsc_schedule_sync();
 	}
+	return count($posts);
 }
 
 
-function filter_by_date( $where = '') 
+function filter_by_date( $where = '' ) 
 {
 	$post_range = get_option( 'tnwsc_post_range' );
 	$where .= " AND post_date > '" . date( 'Y-m-d H:i:s', time() - $post_range ) . "'";
@@ -75,11 +76,15 @@ function filter_by_date( $where = '')
 }
 
 
-function tnwsc_get_posts() 
+function tnwsc_get_posts( $all_posts = false ) 
 {
-	add_filter( 'posts_where', 'filter_by_date' );
+	if(!$all_posts) {
+		add_filter( 'posts_where', 'filter_by_date' );
+	}
 	$posts = query_posts( $query_string.'post_type=post&post_status=publish&posts_per_page=-1&' );
-	remove_filter( 'posts_where', 'filter_by_date' );
+	if(!$all_posts) {
+		remove_filter( 'posts_where', 'filter_by_date' );
+	}
 	return $posts;	
 }
 
@@ -183,6 +188,17 @@ function tnwsc_schedule_sync( $immediate = false )
         wp_schedule_single_event( time() + $tnwsc_sync_frequency, $hook );
     }
 }
+
+/*
+function tnwsc_init() 
+{
+       if ( isset( $_GET['tnwsc_sync'] ) ) {
+               tnwsc_process();
+               exit;
+       }
+}
+add_action( 'init', 'tnwsc_init' );
+*/
 
 // Backend actions
 add_action( 'tnwsc_sync', 'tnwsc_process' );
