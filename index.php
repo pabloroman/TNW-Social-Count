@@ -42,6 +42,12 @@ function tnwsc_log($message)
 function tnwsc_process( $all_posts = false ) 
 {	
 	tnwsc_log('Request: tnwsc_process()');
+
+	// Schedule next sync inmediately
+	if( get_option( 'tnwsc_active_sync' ) == 1) {
+		tnwsc_schedule_sync();
+	}
+	
 	$tnwsc_services = get_option( 'tnwsc_services' );
 	$tnwsc_debug = get_option( 'tnwsc_debug' );
 	$posts = tnwsc_get_posts( $all_posts );
@@ -60,9 +66,6 @@ function tnwsc_process( $all_posts = false )
 			}
 			tnwsc_log("Request: ".$permalink. $debug_info); 
 		}
-	}
-	if( get_option( 'tnwsc_active_sync' ) == 1) {
-		tnwsc_schedule_sync();
 	}
 	return count($posts);
 }
@@ -180,7 +183,6 @@ function tnwsc_schedule_sync( $immediate = false )
     $hook = "tnwsc_sync";
     $tnwsc_sync_frequency = get_option( 'tnwsc_sync_frequency' ) ? get_option( 'tnwsc_sync_frequency' ) : $tnwsc_wp_options['tnwsc_sync_frequency'];
     tnwsc_log( "tnwsc_schedule_sync() - Synching in ".$tnwsc_sync_frequency." seconds" );
-    wp_clear_scheduled_hook( $hook );
     if ( $immediate ) {
         wp_schedule_single_event( time() -1, $hook );
     } else {
@@ -189,16 +191,6 @@ function tnwsc_schedule_sync( $immediate = false )
     }
 }
 
-/*
-function tnwsc_init() 
-{
-       if ( isset( $_GET['tnwsc_sync'] ) ) {
-               tnwsc_process();
-               exit;
-       }
-}
-add_action( 'init', 'tnwsc_init' );
-*/
 
 // Backend actions
 add_action( 'tnwsc_sync', 'tnwsc_process' );
