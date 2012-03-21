@@ -3,8 +3,8 @@
 	function tnwsc_frontend_init()
 	{
 		wp_enqueue_script( 'jquery' );
-		wp_enqueue_script( 'tnswc-js', plugins_url( 'js/tnwsc.js', __FILE__ ), array('jquery'), '1.0' );
-		wp_enqueue_style( 'tnswc-css', plugins_url( 'css/tnwsc.css', __FILE__ ) , array(), '1.0' );
+		wp_enqueue_script( 'tnswc-js', plugins_url( 'js/tnwsc.js', __FILE__ ), array(), filemtime( plugin_dir_path( __FILE__ ). 'js/tnwsc.js' ) );
+		wp_enqueue_style( 'tnswc-css', plugins_url( 'css/tnwsc.css', __FILE__ ) , array(), filemtime( plugin_dir_path( __FILE__ ). 'css/tnwsc.css' ) );
 	}
 
     function tnwsc_button($network, $permalink, $title = '', $excerpt = '') 
@@ -72,7 +72,7 @@
            
         }
 ?>
-        <a href="<?php echo $url; ?>" class="popup-link icon <?php echo $network; ?>"></a>
+        <a href="<?php echo $url; ?>" target="_blank" class="popup-link icon <?php echo $network; ?>"></a>
 <?php
     }
     
