@@ -1,7 +1,7 @@
 <?php
 
 if ( ! current_user_can('manage_options') ){
-    wp_die( __('You do not have sufficient permissions to access this page.') );
+    wp_die( __('You do not have sufficient permissions to access this page.', 'tnwsc') );
 }
 
 global $tnwsc_config;
@@ -43,7 +43,7 @@ if( isset( $postdata['tnwsc_save'] ) ) {
 if ( isset( $postdata['tnwsc_sync_now'] ) ) {
 	$all_posts = true;
 	$count = tnwsc_process( $all_posts );
-	echo "<div class='updated fade'><p><strong>" . sprintf(__( '%s posts updated' ), $count) . '</strong></p></div>';
+	echo "<div class='updated fade'><p><strong>" . sprintf(__( '%s posts updated' , 'tnwsc'), $count) . '</strong></p></div>';
 
 }
 
@@ -58,7 +58,7 @@ $log_path = get_option( 'tnwsc_log_path' );
 ?>
 
 	<div class="wrap">
-		<h2>TNW Social Count admin</h2>
+		<h2><?php _e( 'TNW Social Count admin', 'tnwsc' ); ?></h2>
 		
 		<form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>" enctype="application/x-www-form-urlencoded">
 		
