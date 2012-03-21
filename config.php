@@ -14,9 +14,8 @@ $tnwsc_wp_options = array(
 	'tnwsc_sync_frequency' => 3600, // - Frequency (in seconds) of update the social count; Defaults to one check per hour
 	'tnwsc_post_range' => 604800, // - Sync social count for posts published before this number of seconds; Defaults to ( -7 days )
 	'tnwsc_active_sync' => 0, // - Whether the sync is active ( 1 or 0 ). Defaults to inactive
-	'tnwsc_debug' => 1
+	'tnwsc_debug' => 1,
+	'tnwsc_log_path' => dirname( __FILE__).'/tnwsc.log'
 ); 
-
-$tnwsc_error_log_path = dirname( __FILE__).'./tnwsc.log';
 
 ?>
